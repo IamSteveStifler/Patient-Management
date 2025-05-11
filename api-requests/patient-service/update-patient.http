@@ -1,0 +1,12 @@
+### PUT request to update the patients
+PUT http://localhost:4000/api/v1/patients/update/9787cd44-a658-4892-8921-21d78db462f4
+Content-Type: application/json
+
+{
+  "name": "Simba",
+  "email": "kunal@gmail.com",
+  "address": "San Antonio, TX",
+  "dateOfBirth": "1999-03-01"
+}
+
+###

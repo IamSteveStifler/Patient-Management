@@ -1,5 +1,7 @@
 package com.pm.patientservice.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,6 +12,8 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> notValidArgument(MethodArgumentNotValidException ex) {
@@ -22,9 +26,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<Map<String, String>> emailAlreadyExists(EmailAlreadyExistsException ex) {
+        log.warn(ex.getMessage());
         Map<String, String> errors = new HashMap<>();
         errors.put("majorDescription", ex.getMessage());
         errors.put("minorDescription", "Duplicate Email");
         return ResponseEntity.badRequest().body(errors);
     }
+
+    @ExceptionHandler(PatientNotFoundException.class)
+    public ResponseEntity<Map<String, String>> patientNotFound(PatientNotFoundException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("minorDescription", "patientNotFound");
+        errors.put("majorDescription", ex.getMessage());
+        return ResponseEntity.badRequest().body(errors);
+    }
+
 }
