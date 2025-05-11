@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,6 +55,14 @@ public class PatientService {
         patient.setName(patientRequestDTO.getName());
         patient = patientRepository.save(patient);
         return PatientMapper.patientToPatientResponse(patient);
+    }
+
+    public HashMap<String, Boolean> deletePatient(UUID id) {
+        Patient patient = patientRepository.findById(id).orElseThrow(() -> new PatientNotFoundException("Patient with id: " + id + " doesn't exist!"));
+        patientRepository.delete(patient);
+        var mp = new HashMap<String, Boolean>();
+        mp.put("Success", true);
+        return mp;
     }
 
 }
